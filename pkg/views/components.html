@@ -1,0 +1,30 @@
+{{block "list" . }}
+<div
+  id="list"
+  style="display: flex; flex-direction: column; gap: 1rem; padding: 40px"
+>
+  {{ range $i, $v := .words }}
+  <div>
+    <form
+      method="post"
+      hx-delete="/delete/{{$i}}"
+      hx-target="#list"
+      hx-swap="outerHTML"
+    >
+      <span>{{ $v }}</span>
+      <button type="submit" style="height: 100%">x</button>
+    </form>
+  </div>
+  {{ end }}
+</div>
+{{end}} {{ block "form" . }}
+<section id="form">
+  <form method="post" hx-post="/create" hx-target="#form" hx-swap="outerHTML">
+    <input type="text" name="word" required value="{{ .word }}" />
+    <input type="submit" value="Submit" />
+  </form>
+
+  {{if .error}}
+  <p>{{ .error }}</p>
+  {{end}} {{template "list" . }} {{end}}
+</section>
