@@ -12,10 +12,17 @@ type Container struct {
 	trie *Trie
 }
 
-func NewContainer(tmpl *Template) *Container {
-	return &Container{
+func NewContainer() *Container {
+	cnt := &Container{
 		trie: NewTrie(),
 	}
+
+	words := readFile()
+	for _, word := range words {
+		cnt.trie.Insert(word)
+	}
+
+	return cnt
 }
 
 func (c *Container) HandleIndex(ctx *fiber.Ctx) error {
@@ -47,6 +54,26 @@ func (c *Container) HandleCreateWord(ctx *fiber.Ctx) error {
 
 	return ctx.Render("form", fiber.Map{
 		"words": words,
+	})
+}
+
+type searchWordRequest struct {
+	Word string `form:"word"`
+}
+
+func (c *Container) HandleSearchWord(ctx *fiber.Ctx) error {
+	var req searchWordRequest
+
+	if err := ctx.BodyParser(&req); err != nil {
+		return ctx.Render("search-results", fiber.Map{
+			"results": []string{},
+		})
+	}
+
+	words := c.trie.FindWordsWithPrefix(req.Word)
+
+	return ctx.Render("search-results", fiber.Map{
+		"results": words,
 	})
 }
 

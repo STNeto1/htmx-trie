@@ -22,18 +22,17 @@ func NewTrie() *Trie {
 }
 
 func (t *Trie) Insert(word string) {
+	node := t.Root
 
-	// node := t.Root
+	for _, c := range word {
+		if _, ok := node.Children[c]; !ok {
+			node.Children[c] = NewNode()
+		}
 
-	// for _, c := range word {
-	// 	if _, ok := node.Children[c]; !ok {
-	// 		node.Children[c] = NewNode()
-	// 	}
-	//
-	// 	node = node.Children[c]
-	// }
-	//
-	// node.IsWord = true
+		node = node.Children[c]
+	}
+
+	node.IsWord = true
 }
 
 func (t *Trie) Search(word string) bool {

@@ -26,5 +26,28 @@
 
   {{if .error}}
   <p>{{ .error }}</p>
-  {{end}} {{template "list" . }} {{end}}
+  {{end}} {{template "list" . }}
 </section>
+{{end}} {{block "search" . }}
+<input
+  type="search"
+  name="word"
+  placeholder="Begin Typing To Search..."
+  hx-post="/search"
+  hx-trigger="keyup changed delay:100ms, search"
+  hx-target="#search-results"
+  style="width: 100%; padding: 8px"
+/>
+
+{{template "search-results" . }} {{end}} {{block "search-results" . }}
+<div id="search-results">
+  <ul>
+    {{range .results}}
+    <li>{{.}}</li>
+    {{else}}
+    <li>No results found</li>
+    {{end}}
+  </ul>
+</div>
+
+{{end}}

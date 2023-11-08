@@ -8,7 +8,7 @@ import (
 func main() {
 
 	tmpl := pkg.CreateTemplate()
-	container := pkg.NewContainer(tmpl)
+	container := pkg.NewContainer()
 
 	app := fiber.New(fiber.Config{
 		Views: tmpl,
@@ -18,8 +18,8 @@ func main() {
 	app.Get("/", container.HandleIndex)
 
 	app.Post("/create", container.HandleCreateWord)
+	app.Post("/search", container.HandleSearchWord)
 	app.Delete("/delete/:index", container.HandleDeleteWord)
-	// search word
 
 	app.Listen(":3000")
 }
