@@ -61,19 +61,32 @@ type searchWordRequest struct {
 	Word string `form:"word"`
 }
 
+type displayWord struct {
+	Prefix  string
+	Content string
+}
+
 func (c *Container) HandleSearchWord(ctx *fiber.Ctx) error {
 	var req searchWordRequest
 
 	if err := ctx.BodyParser(&req); err != nil {
 		return ctx.Render("search-results", fiber.Map{
-			"results": []string{},
+			"results": []displayWord{},
 		})
 	}
 
 	words := c.trie.FindWordsWithPrefix(req.Word)
 
+	parsedWords := []displayWord{}
+	for _, word := range words {
+		parsedWords = append(parsedWords, displayWord{
+			Prefix:  req.Word,
+			Content: word[len(req.Word):],
+		})
+	}
+
 	return ctx.Render("search-results", fiber.Map{
-		"results": words,
+		"results": parsedWords,
 	})
 }
 

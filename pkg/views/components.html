@@ -11,13 +11,16 @@
       hx-target="#list"
       hx-swap="outerHTML"
     >
-      <span>{{ $v }}</span>
       <button type="submit" style="height: 100%">x</button>
+      <span>{{ $v }}</span>
     </form>
   </div>
   {{ end }}
 </div>
-{{end}} {{ block "form" . }}
+{{end}}
+
+<!-- separate -->
+{{ block "form" . }}
 <section id="form">
   <form method="post" hx-post="/create" hx-target="#form" hx-swap="outerHTML">
     <input type="text" name="word" required value="{{ .word }}" />
@@ -28,7 +31,10 @@
   <p>{{ .error }}</p>
   {{end}} {{template "list" . }}
 </section>
-{{end}} {{block "search" . }}
+{{end}}
+
+<!-- separate -->
+{{block "search" . }}
 <input
   type="search"
   name="word"
@@ -39,11 +45,14 @@
   style="width: 100%; padding: 8px"
 />
 
-{{template "search-results" . }} {{end}} {{block "search-results" . }}
+{{template "search-results" . }} {{end}}
+
+<!-- separate -->
+{{block "search-results" . }}
 <div id="search-results">
   <ul>
-    {{range .results}}
-    <li>{{.}}</li>
+    {{range $i, $v := .results}}
+    <li><strong>{{$v.Prefix}}</strong>{{$v.Content}}</li>
     {{else}}
     <li>No results found</li>
     {{end}}
