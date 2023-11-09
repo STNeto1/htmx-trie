@@ -1,8 +1,5 @@
 {{block "list" . }}
-<div
-  id="list"
-  style="display: flex; flex-direction: column; gap: 1rem; padding: 40px"
->
+<div id="list" class="w-full max-h-80 overflow-auto flex flex-col gap-4">
   {{ range $i, $v := .words }}
   <div>
     <form
@@ -10,8 +7,15 @@
       hx-delete="/delete/{{$i}}"
       hx-target="#list"
       hx-swap="outerHTML"
+      class="flex items-center gap-2"
     >
-      <button type="submit" style="height: 100%">x</button>
+      <button
+        type="submit"
+        class="border border-neutral-400 font-medium text-sm px-1.5 py-0.5"
+      >
+        X
+      </button>
+
       <span>{{ $v }}</span>
     </form>
   </div>
@@ -23,34 +27,51 @@
 {{ block "form" . }}
 <section id="form">
   <form method="post" hx-post="/create" hx-target="#form" hx-swap="outerHTML">
-    <input type="text" name="word" required value="{{ .word }}" />
-    <input type="submit" value="Submit" />
+    <label for="word" class="mb-2 text-sm font-medium text-gray-900"
+      >Word to add</label
+    >
+    <div class="flex items-center gap-2 pb-4">
+      <input
+        type="search"
+        name="word"
+        class="block w-full px-4 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-neutral-500 focus:border-neutral-500"
+        required
+      />
+      <button
+        type="submit"
+        class="text-white right-2.5 bottom-1 bg-neutral-700 hover:bg-neutral-800 focus:ring-4 focus:outline-none focus:ring-neutral-300 font-medium rounded-lg text-sm px-4 py-2"
+      >
+        Add
+      </button>
+    </div>
   </form>
 
-  {{if .error}}
-  <p>{{ .error }}</p>
-  {{end}} {{template "list" . }}
+  {{template "list" . }}
 </section>
 {{end}}
 
 <!-- separate -->
 {{block "search" . }}
-<input
-  type="search"
-  name="word"
-  placeholder="Begin Typing To Search..."
-  hx-post="/search"
-  hx-trigger="keyup changed delay:100ms, search"
-  hx-target="#search-results"
-  style="width: 100%; padding: 8px"
-/>
+<div>
+  <h3 class="text-sm font-medium text-gray-900">Search</h3>
+
+  <input
+    type="search"
+    name="word"
+    placeholder="Begin Typing To Search..."
+    hx-post="/search"
+    hx-trigger="keyup changed delay:100ms, search"
+    hx-target="#search-results"
+    class="block w-full px-4 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-neutral-500 focus:border-neutral-500"
+  />
+</div>
 
 {{template "search-results" . }} {{end}}
 
 <!-- separate -->
 {{block "search-results" . }}
 <div id="search-results">
-  <ul>
+  <ul class="max-w-md space-y-1 list-disc list-inside">
     {{range $i, $v := .results}}
     <li><strong>{{$v.Prefix}}</strong>{{$v.Content}}</li>
     {{else}}

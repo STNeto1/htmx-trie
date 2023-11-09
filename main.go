@@ -14,6 +14,7 @@ func main() {
 		Views: tmpl,
 	})
 	// app.Use(logger.New())
+	app.Static("/public", "./public")
 
 	app.Get("/", container.HandleIndex)
 

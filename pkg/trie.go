@@ -50,6 +50,10 @@ func (t *Trie) Search(word string) bool {
 }
 
 func (t *Trie) FindWordsWithPrefix(prefix string) []string {
+	if prefix == "" {
+		return []string{}
+	}
+
 	node := t.Root
 	for _, c := range prefix {
 		if child, ok := node.Children[c]; !ok {

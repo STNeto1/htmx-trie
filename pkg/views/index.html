@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HTMX Trie</title>
 
+    <link rel="stylesheet" href="/public/output.css" />
+
     <script
       src="https://unpkg.com/htmx.org@1.9.6"
       integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni"
@@ -12,13 +14,17 @@
     ></script>
   </head>
 
-  <body>
-    <h1>HTMX Trie</h1>
+  <body class="w-screen h-screen flex items-center justify-center">
+    <main class="container mx-auto max-w-lg flex flex-col gap-4 min-h-[626px]">
+      <h1 class="text-center text-xl">HTMX Trie</h1>
 
-    {{ template "search" . }}
+      <div class="border-b border-neutral-300 w-full h-1"></div>
 
-    <hr />
+      {{ template "search" . }}
 
-    {{ template "form" . }}
+      <div class="border-b border-neutral-300 w-full h-1"></div>
+
+      {{ template "form" . }}
+    </main>
   </body>
 </html>
